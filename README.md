@@ -11,7 +11,7 @@ A simple Node.js application that fetches data from public APIs (Pokémon and Di
 
 1. Clone the repository:
    ```bash
-   git clone
+   git clone https://github.com/Jorge644240/blossom-test
    cd blossom-test
    ```
 2. Run the application using Docker Compose:
