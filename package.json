@@ -1,0 +1,30 @@
+{
+  "name": "blossom-test",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/server.js",
+    "build": "tsc"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jorge644240/blossom-test.git"
+  },
+  "author": "Jorge Gallego",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Jorge644240/blossom-test/issues"
+  },
+  "homepage": "https://github.com/Jorge644240/blossom-test#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.4.0"
+  }
+}

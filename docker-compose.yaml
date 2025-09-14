@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  nodeapp:
+    build: .
+    container_name: blossom-test
+    ports:
+      - "3000:3000"
+    command: npm start
