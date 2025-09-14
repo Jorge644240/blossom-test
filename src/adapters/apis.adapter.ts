@@ -7,7 +7,7 @@ import { RequestLogsAdapter } from "./logs.adapter.js";
 
 export class ExternalApiAdapter implements ExternalApiPort {
 	private config;
-	public requests;
+	private requests;
 	constructor(maxRetries: number = 3) {
 		this.config = {
 			maxRetries
@@ -34,15 +34,19 @@ export class ExternalApiAdapter implements ExternalApiPort {
 					status: response.ok ? "success" : "fail",
 					error: response.ok ? undefined : `Request failed with status code ${response.status}`
 				};
-				if (!response.ok) throw new Error(`Request failed with status code ${response.status}`);
+				if (!response.ok) {
+					this.requests.save(requestLog);
+					throw new Error(`Request failed with status code ${response.status}`);
+				};
 				const apiResponse: any = await response.json();
-				requestLog.result = apiResponse;
 				result = {
 					name: apiResponse.name,
-					powers: query.franchise==="pokemon" ? apiResponse.abilities : apiResponse.skills,
-					evolutions: query.franchise==="pokemon" ? apiResponse.forms : apiResponse.nextEvolutions,
+					powers: query.franchise==="pokemon" ? apiResponse.abilities.map((ab: any) => ab.ability?.name) : apiResponse.skills.map((sk: any) => sk.skill),
+					evolutions: query.franchise==="pokemon" ? apiResponse.forms.map((ev: any) => ev.name) : apiResponse.nextEvolutions.map((ev: any) => ev.digimon),
 					weight: query.franchise==="pokemon" ? apiResponse.weight : undefined
 				};
+				requestLog.result = result;
+				this.requests.save(requestLog);
 			} catch (err: any) {
 				if (attempt < this.config.maxRetries) {
 					await new Promise(resolve => setTimeout(resolve, delayMs+getRandomBackoffJitter()));
