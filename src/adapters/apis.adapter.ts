@@ -1,18 +1,18 @@
 import type { ExternalApiPort } from "../application/ExternalApiService.js";
+import type { RequestLogPort } from "../application/RequestLogService.js";
 import type { APIResponse } from "../domain/APIResponse.js";
 import type { Query } from "../domain/Query.js";
 import type { RequestLog } from "../domain/RequestLog.js";
 import getRandomBackoffJitter from "../utils/fn/getRandomBackoffJitter.js";
-import { RequestLogsAdapter } from "./logs.adapter.js";
 
 export class ExternalApiAdapter implements ExternalApiPort {
 	private config;
 	private requests;
-	constructor(maxRetries: number = 3) {
+	constructor(maxRetries: number = 3, requestsLogsPort: RequestLogPort) {
 		this.config = {
 			maxRetries
 		};
-		this.requests = new RequestLogsAdapter();
+		this.requests = requestsLogsPort;
 	}
 	async fetchData(query: Query): Promise<APIResponse> {
 		let result: APIResponse | boolean = false, attempt = 0, delayMs = 1000;
